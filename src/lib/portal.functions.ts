@@ -380,7 +380,7 @@ export const setReportStatus = createServerFn({ method: "POST" })
 
     const target = { area_id: report.areaId, author_id: report.authorId };
     if (!canChangeStatus(context.viewer, target)) {
-      throw new Error("Solo líderes de área o administradores cambian el estado de revisión");
+      throw new Error("Solo líderes procesos o administradores cambian el estado de revisión");
     }
 
     await db.update(reports).set({ status: data.status }).where(eq(reports.id, data.id));
@@ -422,7 +422,7 @@ export const setVersionEntryPath = createServerFn({ method: "POST" })
 
     const target = { area_id: row.report.areaId, author_id: row.report.authorId };
     if (!canAddVersion(context.viewer, target)) {
-      throw new Error("Solo el autor o el líder del área puede cambiar la página principal");
+      throw new Error("Solo el autor o el líder del proceso puede cambiar la página principal");
     }
 
     await db
@@ -442,7 +442,7 @@ export const deleteReport = createServerFn({ method: "POST" })
 
     const target = { area_id: report.areaId, author_id: report.authorId };
     if (!canDeleteReport(context.viewer, target)) {
-      throw new Error("Solo el autor, el líder del área o un administrador puede eliminarlo");
+      throw new Error("Solo el autor, el líder del proceso o un administrador puede eliminarlo");
     }
 
     const versions = await db

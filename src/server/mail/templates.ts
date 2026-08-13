@@ -104,9 +104,9 @@ export function reportReviewEmail(options: {
   url: string;
 }): MailContent {
   const intro = options.isNewReport
-    ? `${options.authorName} publicó un informe nuevo en el área ${options.areaName} y está pendiente de tu revisión.`
-    : `${options.authorName} publicó una nueva versión (${options.versionLabel}) de un informe en el área ${options.areaName} y está pendiente de tu revisión.`;
-  const footer = `Recibes este aviso porque eres administrador o líder del área ${options.areaName}.`;
+    ? `${options.authorName} publicó un informe nuevo en el Proceso ${options.areaName} y está pendiente de tu revisión.`
+    : `${options.authorName} publicó una nueva versión (${options.versionLabel}) de un informe en el Proceso ${options.areaName} y está pendiente de tu revisión.`;
+  const footer = `Recibes este aviso porque eres administrador o líder del Proceso ${options.areaName}.`;
 
   return {
     subject: `Informe para revisar: ${options.title}`,

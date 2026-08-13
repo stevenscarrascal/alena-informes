@@ -46,7 +46,7 @@ export const Route = createFileRoute("/api/reports/upload")({
         if (title.length < 3 || title.length > 140) {
           return json({ error: "El título debe tener entre 3 y 140 caracteres" }, 400);
         }
-        if (!isUuid(areaId)) return json({ error: "Área no válida" }, 400);
+        if (!isUuid(areaId)) return json({ error: "Proceso no válida" }, 400);
         if (reportId && !isUuid(reportId)) return json({ error: "Informe no válido" }, 400);
         if (!entryPath) return json({ error: "Falta la página principal" }, 400);
 

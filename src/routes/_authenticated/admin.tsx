@@ -37,12 +37,12 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { title: "Administración | Alena - Informes" },
       {
         name: "description",
-        content: "Gestiona áreas, miembros, roles e invitaciones del portal interno de informes.",
+        content: "Gestiona procesos, miembros, roles e invitaciones del portal interno de informes.",
       },
       { property: "og:title", content: "Administración | Alena - Informes" },
       {
         property: "og:description",
-        content: "Gestiona áreas, miembros, roles e invitaciones del portal interno de informes.",
+        content: "Gestiona procesos, miembros, roles e invitaciones del portal interno de informes.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -99,18 +99,18 @@ function AdminPage() {
       <div className="mx-auto max-w-5xl px-5 py-8">
         <h1 className="font-display text-2xl font-bold tracking-tight">Administración</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Crea áreas, asigna miembros e invita empleados al portal.
+          Crea procesos, asigna miembros e invita empleados al portal.
         </p>
 
         <Tabs defaultValue="areas" className="mt-6">
           <TabsList>
-            <TabsTrigger value="areas">Áreas y miembros</TabsTrigger>
+            <TabsTrigger value="areas">Procesos y miembros</TabsTrigger>
             <TabsTrigger value="people">Personas</TabsTrigger>
           </TabsList>
 
           <TabsContent value="areas" className="space-y-6 pt-6">
             <div className="rounded-xl border border-border bg-card p-5">
-              <h2 className="font-display text-sm font-semibold">Nueva área</h2>
+              <h2 className="font-display text-sm font-semibold">Nueva Proceso</h2>
               <div className="mt-3 flex flex-wrap items-end gap-3">
                 <div className="min-w-56 flex-1 space-y-2">
                   <Label htmlFor="areaName">Nombre</Label>
@@ -138,7 +138,7 @@ function AdminPage() {
                     void run(async () => {
                       await saveArea({ data: { name: areaName.trim(), color: areaColor } });
                       setAreaName("");
-                    }, "Área creada")
+                    }, "Proceso creado")
                   }
                 >
                   <Plus className="size-4" /> Crear
@@ -163,7 +163,7 @@ function AdminPage() {
                       size="sm"
                       variant="ghost"
                       onClick={() =>
-                        void run(() => deleteArea({ data: { id: area.id } }), "Área eliminada")
+                        void run(() => deleteArea({ data: { id: area.id } }), "Proceso eliminado")
                       }
                     >
                       <Trash2 className="size-4" />
@@ -285,10 +285,10 @@ function AdminPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Área inicial</Label>
+                  <Label>Proceso inicial</Label>
                   <Select value={inviteArea} onValueChange={setInviteArea}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Sin área" />
+                      <SelectValue placeholder="Sin proceso" />
                     </SelectTrigger>
                     <SelectContent>
                       {areas.map((area) => (

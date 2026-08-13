@@ -43,13 +43,13 @@ export const Route = createFileRoute("/_authenticated/upload")({
       {
         name: "description",
         content:
-          "Sube un informe en HTML o un ZIP con index.html, CSS y JS al área correspondiente.",
+          "Sube un informe en HTML o un ZIP con index.html, CSS y JS al proceso correspondiente.",
       },
       { property: "og:title", content: "Cargar informe | Alena - Informes" },
       {
         property: "og:description",
         content:
-          "Sube un informe en HTML o un ZIP con index.html, CSS y JS al área correspondiente.",
+          "Sube un informe en HTML o un ZIP con index.html, CSS y JS al proceso correspondiente.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -103,11 +103,11 @@ function UploadPage() {
       return;
     }
     if (!areaId) {
-      toast.error("Selecciona el área responsable");
+      toast.error("Selecciona el proceso responsable");
       return;
     }
     if (!canUploadToArea(viewer, areaId)) {
-      toast.error("No perteneces al área seleccionada");
+      toast.error("No perteneces al proceso seleccionado");
       return;
     }
     if (!entryPath) {
@@ -164,10 +164,10 @@ function UploadPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Área responsable</Label>
+            <Label>Proceso responsable</Label>
             <Select value={areaId} onValueChange={setAreaId}>
               <SelectTrigger>
-                <SelectValue placeholder="Selecciona un área" />
+                <SelectValue placeholder="Selecciona un proceso" />
               </SelectTrigger>
               <SelectContent>
                 {uploadAreas.map((area) => (
@@ -260,7 +260,7 @@ function UploadPage() {
 
           {!uploadAreas.length && (
             <p className="rounded-lg border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
-              Aún no perteneces a ningún área. Pide a un administrador que te asigne una para poder
+              Aún no perteneces a ningún proceso. Pide a un administrador que te asigne uno para poder
               publicar informes.
             </p>
           )}

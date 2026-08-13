@@ -162,7 +162,7 @@ function ReportPage() {
                   color: area?.color ?? "#1e40af",
                 }}
               >
-                {area?.name ?? "Sin área"}
+                {area?.name ?? "Sin proceso"}
               </span>
               <Badge variant="secondary">
                 {STATUS_LABEL[(report?.status as Status) ?? "nuevo"]}
@@ -228,7 +228,7 @@ function ReportPage() {
         {report && !isApproved(report.status as string) && (
           <div className="mt-5 rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-800 dark:text-amber-300">
             Este informe está <strong>pendiente de aprobación</strong>. Solo lo ven su autor, el
-            líder del área y los administradores hasta que se apruebe.
+            líder del proceso y los administradores hasta que se apruebe.
           </div>
         )}
 
@@ -265,7 +265,7 @@ function ReportPage() {
             )}
             {!mayChangeStatus && (
               <span className="text-xs text-muted-foreground">
-                Solo el líder del área o un administrador puede aprobar.
+                Solo el líder del proceso o un administrador puede aprobar.
               </span>
             )}
             {mayDelete && (
@@ -305,7 +305,7 @@ function ReportPage() {
             <span className="text-xs text-muted-foreground">
               {mayAddVersion
                 ? "Se usa en el visor y en la miniatura del informe."
-                : "Solo el autor o el líder del área puede cambiarla."}
+                : "Solo el autor o el líder del proceso puede cambiarla."}
             </span>
           </div>
         )}
@@ -331,7 +331,7 @@ function ReportPage() {
               src={viewerUrl}
               title={(report?.title as string) ?? "Informe"}
               className="h-[70vh] w-full bg-white"
-              sandbox="allow-scripts allow-popups allow-downloads"
+              sandbox="allow-scripts allow-downloads"
               referrerPolicy="no-referrer"
             />
           ) : (

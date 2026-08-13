@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import tsConfigPaths from "vite-tsconfig-paths";
 import { nitro } from "nitro/vite";
 
 // El backend corre en Node autohospedado: mysql2, nodemailer y el SDK de S3
@@ -10,6 +9,7 @@ import { nitro } from "nitro/vite";
 export default defineConfig(({ command }) => ({
   resolve: {
     alias: { "@": `${process.cwd()}/src` },
+    tsconfigPaths: true,
     dedupe: [
       "react",
       "react-dom",
@@ -31,7 +31,6 @@ export default defineConfig(({ command }) => ({
   server: { host: "::", port: 8080 },
   plugins: [
     tailwindcss(),
-    tsConfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackStart({
       // Redirige la entrada de servidor de TanStack Start a src/server.ts
       // (nuestro envoltorio de errores SSR). Nitro construye desde ahí.

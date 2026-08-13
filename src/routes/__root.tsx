@@ -79,13 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Portal interno para publicar, versionar y consultar informes HTML por área o departamento.",
+          "Portal interno para publicar, versionar y consultar informes HTML por proceso o departamento.",
       },
       { property: "og:title", content: "Alena - Informes" },
       {
         property: "og:description",
         content:
-          "Portal interno para publicar, versionar y consultar informes HTML por área o departamento.",
+          "Portal interno para publicar, versionar y consultar informes HTML por proceso o departamento.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

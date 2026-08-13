@@ -19,17 +19,17 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Alena - Informes | Portal de informes HTML por área" },
+      { title: "Alena - Informes | Portal de informes HTML por proceso" },
       {
         name: "description",
         content:
-          "Alena centraliza los informes HTML que tu equipo genera con IA: carga, versiona, comparte y visualiza cada informe por área con permisos granulares.",
+          "Alena centraliza los informes HTML que tu equipo genera con IA: carga, versiona, comparte y visualiza cada informe por proceso con permisos granulares.",
       },
-      { property: "og:title", content: "Alena - Informes | Portal de informes HTML por área" },
+      { property: "og:title", content: "Alena - Informes | Portal de informes HTML por proceso" },
       {
         property: "og:description",
         content:
-          "Alena centraliza los informes HTML que tu equipo genera con IA: carga, versiona, comparte y visualiza cada informe por área con permisos granulares.",
+          "Alena centraliza los informes HTML que tu equipo genera con IA: carga, versiona, comparte y visualiza cada informe por proceso con permisos granulares.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -53,8 +53,8 @@ const features = [
   },
   {
     icon: FolderKanban,
-    title: "Áreas y miembros",
-    body: "Crea departamentos, asigna líderes y miembros, y mantén cada informe visible solo para quien corresponde.",
+    title: "Procesos y miembros",
+    body: "Crea procesos, asigna líderes y miembros, y mantén cada informe visible solo para quien corresponde.",
   },
   {
     icon: FileCode2,
@@ -74,7 +74,7 @@ const features = [
   {
     icon: Users,
     title: "Permisos granulares",
-    body: "Matriz por rol y por área, con excepciones puntuales y vista previa de lo que verá cada persona.",
+    body: "Matriz por rol y por proceso, con excepciones puntuales y vista previa de lo que verá cada persona.",
   },
 ];
 
@@ -86,13 +86,13 @@ const steps = [
   },
   {
     n: "02",
-    title: "Cárgalo en tu área",
+    title: "Cárgalo en tu proceso",
     body: "Arrastra el .html o el .zip; detectamos el index automáticamente.",
   },
   {
     n: "03",
     title: "Compártelo con tu equipo",
-    body: "Tu área lo ve al instante, con versiones y estado de revisión.",
+    body: "Tu proceso lo ve al instante, con versiones y estado de revisión.",
   },
 ];
 
@@ -171,7 +171,7 @@ function Landing() {
                 <span className="text-primary"> en un solo portal</span>
               </h1>
               <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-                Alena centraliza los informes HTML que cada área genera con IA: se cargan, se
+                Alena centraliza los informes HTML que cada proceso genera con IA: se cargan, se
                 versionan y se consultan en un visor interactivo. Sin correos ni archivos sueltos.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
@@ -186,7 +186,7 @@ function Landing() {
                 </Button>
               </div>
               <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                {["Acceso por invitación", "Versionado automático", "Permisos por área"].map(
+                {["Acceso por invitación", "Versionado automático", "Permisos por proceso"].map(
                   (t) => (
                     <li key={t} className="flex items-center gap-2">
                       <CheckCircle2 className="size-4 text-primary" />
@@ -201,7 +201,7 @@ function Landing() {
               <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
                 <img
                   src={dashboardImg}
-                  alt="Panel de Alena mostrando informes por área con gráficos y métricas"
+                  alt="Panel de Alena mostrando informes por proceso con gráficos y métricas"
                   width={1600}
                   height={1008}
                   className="w-full"
@@ -274,7 +274,7 @@ function Landing() {
               <ul className="mt-6 space-y-3 text-sm">
                 {[
                   "Gráficos de Chart.js, Plotly o ECharts funcionando",
-                  "Miniaturas reales en el panel y en la tabla del área",
+                  "Miniaturas reales en el panel y en la tabla del proceso",
                   "Selector de página principal cuando el ZIP trae varias",
                   "Descarga y pantalla completa desde el visor",
                 ].map((t) => (
@@ -294,7 +294,7 @@ function Landing() {
             Ejemplos de informes
           </h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">
-            Así se ven las tarjetas en el panel: área, estado de revisión y una vista previa del
+            Así se ven las tarjetas en el panel: proceso, estado de revisión y una vista previa del
             contenido.
           </p>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -351,7 +351,7 @@ function Landing() {
               ¿Listo para ordenar los informes de tu organización?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              El acceso es por invitación: un administrador crea las áreas y suma a cada persona.
+              El acceso es por invitación: un administrador crea las procesos y suma a cada persona.
             </p>
             <div className="mt-8 flex justify-center gap-3">
               <Button asChild size="lg">

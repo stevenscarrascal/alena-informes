@@ -33,12 +33,12 @@ export const Route = createFileRoute("/auth")({
       { title: "Acceso | Alena - Informes" },
       {
         name: "description",
-        content: "Ingresa al portal interno para consultar y publicar informes HTML por área.",
+        content: "Ingresa al portal interno para consultar y publicar informes HTML por proceso o departamento.",
       },
       { property: "og:title", content: "Acceso | Alena - Informes" },
       {
         property: "og:description",
-        content: "Ingresa al portal interno para consultar y publicar informes HTML por área.",
+        content: "Ingresa al portal interno para consultar y publicar informes HTML por proceso o departamento.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -122,7 +122,7 @@ function AuthPage() {
         ? "Estás activando tu invitación. Elige una contraseña para entrar."
         : "Elige una contraseña nueva para volver a entrar."
       : mode === "bootstrap"
-        ? "Aún no hay administradores. La primera cuenta gestionará áreas e invitaciones."
+        ? "Aún no hay administradores. La primera cuenta gestionará procesos, miembros, roles y invitaciones."
         : mode === "forgot"
           ? "Te enviaremos un enlace para definir una contraseña nueva."
           : "El acceso es por invitación. Ingresa con el correo de tu empresa.";

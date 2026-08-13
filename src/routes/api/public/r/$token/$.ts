@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { db, reportVersions, viewTokens } from "@/server/db";
 import { getObject } from "@/server/storage/s3";
-import { REPORT_CSP, sanitizeReportHtml, sanitizeSvg } from "@/lib/report-sanitize";
+import { REPORT_CSP, rewriteCssUrls, sanitizeReportHtml, sanitizeSvg } from "@/lib/report-sanitize";
 
 const TEXT_TYPES: Record<string, string> = {
   html: "text/html; charset=utf-8",
@@ -73,8 +73,12 @@ export const Route = createFileRoute("/api/public/r/$token/$")({
           "x-frame-options": "SAMEORIGIN",
         };
 
+        // El paquete se sirve bajo este prefijo, no en la raíz del sitio: las
+        // rutas absolutas del propio informe (/img/x.png) se reescriben aquí.
+        const basePath = `/api/public/r/${token}/`;
+
         if (ext === "html" || ext === "htm") {
-          const { html } = sanitizeReportHtml(file.body.toString("utf8"));
+          const { html } = sanitizeReportHtml(file.body.toString("utf8"), basePath);
           return new Response(html, {
             headers: { ...baseHeaders, "content-security-policy": REPORT_CSP },
           });
@@ -87,6 +91,11 @@ export const Route = createFileRoute("/api/public/r/$token/$")({
               "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
             },
           });
+        }
+
+        if (ext === "css") {
+          const css = rewriteCssUrls(file.body.toString("utf8"), basePath);
+          return new Response(css, { headers: baseHeaders });
         }
 
         return new Response(new Uint8Array(file.body), { headers: baseHeaders });

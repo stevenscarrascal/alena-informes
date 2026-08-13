@@ -31,13 +31,13 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       {
         name: "description",
         content:
-          "Consulta los informes recientes de tus áreas, filtra por departamento y busca por título.",
+          "Consulta los informes recientes de tus Procesos, filtra por departamento y busca por título.",
       },
       { property: "og:title", content: "Panel de informes | Alena - Informes" },
       {
         property: "og:description",
         content:
-          "Consulta los informes recientes de tus áreas, filtra por departamento y busca por título.",
+          "Consulta los informes recientes de tus Procesos, filtra por departamento y busca por título.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -91,7 +91,7 @@ function DashboardPage() {
           <div>
             <h1 className="font-display text-2xl font-bold tracking-tight">Panel de informes</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Informes recientes de {me?.areas?.length ?? 0} área(s) con acceso.
+              Informes recientes de {me?.areas?.length ?? 0} proceso(s) con acceso.
             </p>
           </div>
           <Button asChild>
@@ -137,19 +137,19 @@ function DashboardPage() {
               >
                 <span className="truncate">
                   {selectedAreaIds.length === 0
-                    ? "Filtrar por área"
+                    ? "Filtrar por proceso"
                     : selectedAreaIds.length === 1
                       ? selectedAreas[0]?.name
-                      : `${selectedAreaIds.length} áreas seleccionadas`}
+                      : `${selectedAreaIds.length} procesos seleccionados`}
                 </span>
                 <ChevronDown className="size-4 shrink-0 opacity-60" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-0" align="start">
               <Command>
-                <CommandInput placeholder="Buscar área…" />
+                <CommandInput placeholder="Buscar proceso…" />
                 <CommandList>
-                  <CommandEmpty>No se encontraron áreas.</CommandEmpty>
+                  <CommandEmpty>No se encontraron procesos.</CommandEmpty>
                   <CommandGroup>
                     <CommandItem
                       onSelect={() => {
@@ -165,7 +165,7 @@ function DashboardPage() {
                         tabIndex={-1}
                       />
                       <span className={cn(selectedAreaIds.length === 0 && "font-medium")}>
-                        Todas las áreas
+                        Todas las Procesos
                       </span>
                       {selectedAreaIds.length === 0 && (
                         <Check className="ml-auto size-4 text-primary" />
@@ -244,7 +244,7 @@ function DashboardPage() {
                       color: area?.color ?? "#1e40af",
                     }}
                   >
-                    {area?.name ?? "Sin área"}
+                    {area?.name ?? "Sin proceso"}
                   </span>
                   <Badge
                     variant="secondary"

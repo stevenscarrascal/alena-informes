@@ -44,17 +44,17 @@ import {
 export const Route = createFileRoute("/_authenticated/permissions")({
   head: () => ({
     meta: [
-      { title: "Permisos por rol y área | Alena - Informes" },
+      { title: "Permisos por rol y proceso | Alena - Informes" },
       {
         name: "description",
         content:
-          "Configura en caliente qué puede hacer cada rol en cada área y previsualiza la experiencia de líderes y empleados.",
+          "Configura en caliente qué puede hacer cada rol en cada proceso y previsualiza la experiencia de líderes y empleados.",
       },
-      { property: "og:title", content: "Permisos por rol y área | Alena - Informes" },
+      { property: "og:title", content: "Permisos por rol y proceso | Alena - Informes" },
       {
         property: "og:description",
         content:
-          "Configura en caliente qué puede hacer cada rol en cada área y previsualiza la experiencia de líderes y empleados.",
+          "Configura en caliente qué puede hacer cada rol en cada proceso y previsualiza la experiencia de líderes y empleados.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -138,7 +138,7 @@ function PermissionsPage() {
       await clearOverrides({ data: { areaId } });
       await queryClient.invalidateQueries();
       setDraft(null);
-      toast.success("Excepciones del área eliminadas");
+      toast.success("Excepciones del proceso eliminadas");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "No se pudo restablecer");
     } finally {
@@ -192,7 +192,7 @@ function PermissionsPage() {
 
   const previewChecks = previewViewer
     ? [
-        { label: "Panel y tabla del área", ok: canViewArea(previewViewer, previewAreaId) },
+        { label: "Panel y tabla del proceso", ok: canViewArea(previewViewer, previewAreaId) },
         { label: "Botón «Cargar informe»", ok: canUploadToArea(previewViewer, previewAreaId) },
         { label: "Sección «Actividad»", ok: canViewActivity(previewViewer) },
         {
@@ -240,7 +240,7 @@ function PermissionsPage() {
       <div className="mx-auto px-8 py-8">
         <h1 className="font-display text-2xl font-bold tracking-tight">Permisos</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Define qué puede hacer cada rol, de forma global o con excepciones por área. Los cambios
+          Define qué puede hacer cada rol, de forma global o con excepciones por proceso. Los cambios
           se aplican de inmediato.
         </p>
 
@@ -252,7 +252,7 @@ function PermissionsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={GLOBAL}>Reglas globales (todas las áreas)</SelectItem>
+                <SelectItem value={GLOBAL}>Reglas globales (todos los procesos)</SelectItem>
                 {areas.map((area) => (
                   <SelectItem key={area.id} value={area.id}>
                     {area.name}
@@ -270,7 +270,7 @@ function PermissionsPage() {
               <RotateCcw className="size-4" /> Volver a las reglas globales
             </Button>
           )}
-          {currentArea && hasOverrides && <Badge variant="secondary">Área personalizada</Badge>}
+          {currentArea && hasOverrides && <Badge variant="secondary">Proceso personalizado</Badge>}
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -323,7 +323,7 @@ function PermissionsPage() {
               <h2 className="font-display text-sm font-semibold">Vista previa</h2>
               <p className="mt-1 text-xs text-muted-foreground">
                 Qué vería una persona con este rol en{" "}
-                <strong>{previewArea?.name ?? "el área seleccionada"}</strong>.
+                <strong>{previewArea?.name ?? "el proceso seleccionado"}</strong>.
               </p>
               <div className="mt-3">
                 <Select value={previewRole} onValueChange={(v) => setPreviewRole(v as RoleKey)}>
@@ -342,7 +342,7 @@ function PermissionsPage() {
 
               {!previewArea && (
                 <p className="mt-4 text-xs text-muted-foreground">
-                  Crea un área para poder previsualizar la experiencia.
+                  Crea un proceso para poder previsualizar la experiencia.
                 </p>
               )}
 

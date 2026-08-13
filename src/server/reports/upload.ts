@@ -148,7 +148,7 @@ export async function publishReport(
   input: PublishInput,
 ): Promise<{ reportId: string; versionId: string }> {
   if (!canUploadToArea(input.viewer, input.areaId)) {
-    throw new UploadError("No perteneces al área seleccionada");
+    throw new UploadError("No perteneces al proceso seleccionada");
   }
 
   let reportId = input.reportId;
@@ -161,7 +161,7 @@ export async function publishReport(
       .limit(1);
     if (!existing) throw new UploadError("Informe no encontrado o sin acceso");
     if (!canAddVersion(input.viewer, { area_id: existing.areaId, author_id: existing.authorId })) {
-      throw new UploadError("Solo el autor o el líder del área puede publicar nuevas versiones");
+      throw new UploadError("Solo el autor o el líder del proceso puede publicar nuevas versiones");
     }
   }
 

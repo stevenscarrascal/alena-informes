@@ -33,7 +33,7 @@ export const REPORT_CSP = [
   "base-uri 'none'",
   "form-action 'none'",
   "frame-ancestors 'self'",
-  "sandbox allow-scripts allow-popups allow-downloads",
+  "sandbox allow-scripts allow-downloads",
 ].join("; ");
 
 function hostAllowed(url: string, allowed: string[]): boolean {
@@ -58,10 +58,77 @@ function attr(tag: string, name: string): string | null {
 }
 
 /**
- * Elimina scripts de orígenes no permitidos, marcos anidados, plugins
- * embebidos, `<base>` y URLs `javascript:`.
+ * El paquete subido se sirve bajo `/api/public/r/{token}/...`, no en la raíz
+ * del sitio. Una ruta como `/img/x.png` —válida cuando el informe vivía en su
+ * propio dominio— apunta ahora al router de la app y da 404. Como `<base>`
+ * está bloqueado a propósito (podría redirigir todas las rutas relativas a
+ * otro origen), la única forma segura de arreglarlo es reescribir cada ruta
+ * que empiece por una sola barra al prefijo real del informe.
+ *
+ * No toca protocolo-relativas (`//cdn...`), absolutas con esquema
+ * (`https://...`), ni nada que ya sea relativo (`img/x.png`, `../x.png`):
+ * esas ya resuelven bien solas.
  */
-export function sanitizeReportHtml(html: string): { html: string; removed: number } {
+function rewriteRootRelative(value: string, basePath: string): string {
+  if (!/^\/(?!\/)/.test(value)) return value;
+  return basePath + value.slice(1);
+}
+
+const URL_ATTRS = /\s(src|href|poster|xlink:href)\s*=\s*("([^"]*)"|'([^']*)')/gi;
+
+function rewriteAttributeUrls(html: string, basePath: string): string {
+  return html.replace(
+    URL_ATTRS,
+    (full, attrName: string, _quoted: string, dq?: string, sq?: string) => {
+      const value = dq ?? sq ?? "";
+      const rewritten = rewriteRootRelative(value, basePath);
+      if (rewritten === value) return full;
+      const quote = dq !== undefined ? '"' : "'";
+      return ` ${attrName}=${quote}${rewritten}${quote}`;
+    },
+  );
+}
+
+function rewriteSrcset(html: string, basePath: string): string {
+  return html.replace(
+    /\ssrcset\s*=\s*("([^"]*)"|'([^']*)')/gi,
+    (full, _quoted: string, dq?: string, sq?: string) => {
+      const raw = dq ?? sq ?? "";
+      const rewritten = raw
+        .split(",")
+        .map((entry) => {
+          const trimmed = entry.trim();
+          const spaceIdx = trimmed.indexOf(" ");
+          const url = spaceIdx === -1 ? trimmed : trimmed.slice(0, spaceIdx);
+          const descriptor = spaceIdx === -1 ? "" : trimmed.slice(spaceIdx);
+          return rewriteRootRelative(url, basePath) + descriptor;
+        })
+        .join(", ");
+      const quote = dq !== undefined ? '"' : "'";
+      return ` srcset=${quote}${rewritten}${quote}`;
+    },
+  );
+}
+
+/** Reescribe `url(/…)` dentro de CSS (bloques `<style>`, atributos `style="…"` o un .css entero). */
+export function rewriteCssUrls(css: string, basePath: string): string {
+  return css.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/gi, (full, quote: string, rawUrl: string) => {
+    const url = rawUrl.trim();
+    const rewritten = rewriteRootRelative(url, basePath);
+    if (rewritten === url) return full;
+    return `url(${quote}${rewritten}${quote})`;
+  });
+}
+
+/**
+ * Elimina scripts de orígenes no permitidos, marcos anidados, plugins
+ * embebidos, `<base>` y URLs `javascript:`. Reescribe además las rutas
+ * absolutas del propio paquete para que apunten a `basePath`.
+ */
+export function sanitizeReportHtml(
+  html: string,
+  basePath: string,
+): { html: string; removed: number } {
   let removed = 0;
   let output = html;
 
@@ -115,6 +182,11 @@ export function sanitizeReportHtml(html: string): { html: string; removed: numbe
     removed += 1;
     return "";
   });
+
+  // Rutas absolutas (/img/x.png) del propio paquete → prefijo real del informe.
+  output = rewriteAttributeUrls(output, basePath);
+  output = rewriteSrcset(output, basePath);
+  output = rewriteCssUrls(output, basePath);
 
   const meta = `<meta http-equiv="Content-Security-Policy" content="${REPORT_CSP.replace(/"/g, "'")}">`;
   if (/<head[^>]*>/i.test(output)) {

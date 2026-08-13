@@ -44,7 +44,7 @@ export async function notifyReportSubmitted(options: {
 
   const mail = reportReviewEmail({
     title: options.title,
-    areaName: area[0]?.name ?? "el área",
+    areaName: area[0]?.name ?? "el proceso",
     authorName: author[0]?.fullName || "Un miembro del equipo",
     versionLabel: options.versionLabel,
     isNewReport: options.isNewReport,

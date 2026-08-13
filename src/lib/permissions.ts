@@ -29,25 +29,25 @@ export const CAPABILITIES = [
 export type Capability = (typeof CAPABILITIES)[number];
 
 export const CAPABILITY_LABEL: Record<Capability, string> = {
-  ver_informes: "Ver informes del área",
+  ver_informes: "Ver informes del proceso",
   publicar_informe: "Publicar informes nuevos",
   nueva_version_propia: "Subir versión de informes propios",
   nueva_version_ajena: "Subir versión de informes de otros",
-  cambiar_estado: "Aprobar informes del área",
+  cambiar_estado: "Aprobar informes del proceso",
   eliminar_propio: "Eliminar informes propios",
   eliminar_ajeno: "Eliminar informes de otros",
   ver_actividad: "Ver el historial de actividad",
 };
 
 export const CAPABILITY_HINT: Record<Capability, string> = {
-  ver_informes: "Acceso al panel, la tabla del área y el visor.",
-  publicar_informe: "Habilita el formulario de carga en esa área.",
+  ver_informes: "Acceso al panel, la tabla del proceso y el visor.",
+  publicar_informe: "Habilita el formulario de carga en ese proceso.",
   nueva_version_propia: "Actualizar informes que la persona creó.",
   nueva_version_ajena: "Actualizar informes creados por cualquier miembro.",
   cambiar_estado: "Aprobar o devolver a revisión un informe para que sea visible.",
   eliminar_propio: "Borrar sus propios informes y archivos.",
-  eliminar_ajeno: "Borrar informes de cualquier miembro del área.",
-  ver_actividad: "Sección Actividad con el registro global de las áreas.",
+  eliminar_ajeno: "Borrar informes de cualquier miembro del proceso.",
+  ver_actividad: "Sección Actividad con el registro global de los procesos.",
 };
 
 /** Valores por defecto si no existe regla en la base de datos. */
@@ -91,16 +91,16 @@ export type Viewer = {
 
 export const ROLE_LABEL: Record<RoleKey, string> = {
   admin: "Administrador",
-  lider: "Líder de área",
+  lider: "Líder de proceso",
   empleado: "Empleado",
-  invitado: "Sin áreas asignadas",
+  invitado: "Sin procesos asignados",
 };
 
 export const ROLE_DESCRIPTION: Record<RoleKey, string> = {
-  admin: "Ve todas las áreas, administra áreas, miembros, roles, invitaciones y permisos.",
-  lider: "Gestiona los informes de las áreas que lidera, según la matriz configurada.",
-  empleado: "Trabaja en las áreas donde es miembro, según la matriz configurada.",
-  invitado: "Todavía no pertenece a ningún área, por lo que no puede ver ni publicar informes.",
+  admin: "Ve todos los procesos, administra procesos, miembros, roles, invitaciones y permisos.",
+  lider: "Gestiona los informes de los procesos que lidera, según la matriz configurada.",
+  empleado: "Trabaja en los procesos donde es miembro, según la matriz configurada.",
+  invitado: "Todavía no pertenece a ningún proceso, por lo que no puede ver ni publicar informes.",
 };
 
 export function roleOf(viewer: Viewer | null | undefined): RoleKey {

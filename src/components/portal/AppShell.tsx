@@ -114,7 +114,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
           {!collapsed && (
             <p className="mt-6 px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Áreas
+              PROCESOS
             </p>
           )}
           {collapsed && <div className="mt-6" />}
@@ -139,7 +139,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Link>
           ))}
           {!me?.areas?.length && !collapsed && (
-            <p className="px-3 text-xs text-muted-foreground">Sin áreas asignadas todavía.</p>
+            <p className="px-3 text-xs text-muted-foreground">Sin procesos asignados todavía.</p>
           )}
 
           {me?.isAdmin && (

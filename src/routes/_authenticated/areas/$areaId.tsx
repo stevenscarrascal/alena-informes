@@ -21,17 +21,17 @@ import {
 export const Route = createFileRoute("/_authenticated/areas/$areaId")({
   head: () => ({
     meta: [
-      { title: "Informes del área | Alena - Informes" },
+      { title: "Informes del proceso | Alena - Informes" },
       {
         name: "description",
         content:
-          "Listado tabular de los informes del área con versión, tamaño, estado y última modificación.",
+          "Listado tabular de los informes del proceso con versión, tamaño, estado y última modificación.",
       },
-      { property: "og:title", content: "Informes del área | Alena - Informes" },
+      { property: "og:title", content: "Informes del proceso | Alena - Informes" },
       {
         property: "og:description",
         content:
-          "Listado tabular de los informes del área con versión, tamaño, estado y última modificación.",
+          "Listado tabular de los informes del proceso con versión, tamaño, estado y última modificación.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -65,10 +65,10 @@ function AreaPage() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-              Área
+              Proceso
             </p>
             <h1 className="mt-1 font-display text-2xl font-bold tracking-tight">
-              {area?.name ?? "Área"}
+              {area?.name ?? "Proceso"}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
               {area?.description ?? "Informes publicados por este departamento."}
@@ -164,7 +164,7 @@ function AreaPage() {
           </Table>
           {reports.data?.length === 0 && (
             <p className="p-8 text-center text-sm text-muted-foreground">
-              Este área todavía no tiene informes.
+              Este proceso todavía no tiene informes.
             </p>
           )}
         </div>

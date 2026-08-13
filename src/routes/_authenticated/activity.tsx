@@ -12,12 +12,12 @@ export const Route = createFileRoute("/_authenticated/activity")({
       { title: "Actividad | Alena - Informes" },
       {
         name: "description",
-        content: "Historial de cargas, versiones y cambios de estado de los informes por área.",
+        content: "Historial de cargas, versiones y cambios de estado de los informes por proceso.",
       },
       { property: "og:title", content: "Actividad | Alena - Informes" },
       {
         property: "og:description",
-        content: "Historial de cargas, versiones y cambios de estado de los informes por área.",
+        content: "Historial de cargas, versiones y cambios de estado de los informes por proceso.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -42,12 +42,12 @@ function ActivityPage() {
       <div className="mx-auto max-w-3xl px-5 py-8">
         <h1 className="font-display text-2xl font-bold tracking-tight">Actividad reciente</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Movimientos en los informes de tus áreas.
+          Movimientos en los informes de tus procesos.
         </p>
 
         {activity.isError && (
           <p className="mt-10 rounded-lg border border-border bg-muted/40 p-4 text-center text-sm text-muted-foreground">
-            La actividad global está disponible para líderes de área y administradores.
+            La actividad global está disponible para líderes de proceso y administradores.
           </p>
         )}
 
@@ -65,7 +65,7 @@ function ActivityPage() {
                     {ACTION_LABEL[item.action] ?? item.action}
                     {item.detail ? `: ${item.detail}` : ""}
                   </p>
-                  <p className="mt-1 text-xs text-muted-foreground">{area?.name ?? "Sin área"}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{area?.name ?? "Sin proceso"}</p>
                 </div>
                 <span className="whitespace-nowrap text-xs text-muted-foreground">
                   {formatDateTime(item.created_at as string)}
