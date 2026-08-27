@@ -8,7 +8,7 @@
     "build": "node ./scripts/clean-output.mjs && vite build",
     "build:dev": "node ./scripts/clean-output.mjs && vite build --mode development",
     "preview": "vite preview",
-    "start": "node .output/server/index.mjs",
+    "start": "node ./scripts/fix-ssr-exportall.mjs && node .output/server/index.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
