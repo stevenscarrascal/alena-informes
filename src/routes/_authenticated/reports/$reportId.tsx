@@ -7,6 +7,7 @@ import { ArrowLeft, ExternalLink, Maximize2, Share2, Trash2, Upload } from "luci
 
 import { AppShell, useMe } from "@/components/portal/AppShell";
 import {
+  adminMoveReport,
   createViewToken,
   deleteReport,
   getReport,
@@ -64,10 +65,13 @@ function ReportPage() {
   const removeReport = useServerFn(deleteReport);
   const logView = useServerFn(registerView);
   const updateEntryPath = useServerFn(setVersionEntryPath);
+  const moveReport = useServerFn(adminMoveReport);
 
   const [versionId, setVersionId] = useState<string>("");
   const [viewerUrl, setViewerUrl] = useState<string>("");
   const [savingEntry, setSavingEntry] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [moving, setMoving] = useState(false);
 
   const query = useQuery({
     queryKey: ["report", reportId],
@@ -106,10 +110,31 @@ function ReportPage() {
 
   async function handleDelete() {
     if (!confirm("¿Eliminar este informe y todas sus versiones?")) return;
-    await removeReport({ data: { id: reportId } });
-    await queryClient.invalidateQueries();
-    toast.success("Informe eliminado");
-    navigate({ to: "/dashboard" });
+    setDeleting(true);
+    try {
+      await removeReport({ data: { id: reportId } });
+      await queryClient.invalidateQueries();
+      toast.success("Informe eliminado");
+      navigate({ to: "/dashboard" });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "No se pudo eliminar el informe");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  async function handleMove(newAreaId: string) {
+    if (!newAreaId || newAreaId === reportRef.area_id) return;
+    setMoving(true);
+    try {
+      await moveReport({ data: { id: reportId, areaId: newAreaId } });
+      await queryClient.invalidateQueries();
+      toast.success("Informe movido de proceso");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "No se pudo mover el informe");
+    } finally {
+      setMoving(false);
+    }
   }
 
   const area = report?.areas as { name: string; color: string | null; id: string } | null;
@@ -268,11 +293,35 @@ function ReportPage() {
                 Solo el líder del proceso o un administrador puede aprobar.
               </span>
             )}
+            {viewer?.isAdmin && (
+              <div className="ml-auto flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">Mover a otro proceso</span>
+                <Select
+                  value=""
+                  onValueChange={(newAreaId) => void handleMove(newAreaId)}
+                  disabled={moving}
+                >
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder={area?.name ?? "Selecciona un proceso"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(me?.allAreas ?? [])
+                      .filter((a) => a.id !== reportRef.area_id)
+                      .map((a) => (
+                        <SelectItem key={a.id} value={a.id}>
+                          {a.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             {mayDelete && (
               <Button
                 size="sm"
                 variant="ghost"
-                className="ml-auto"
+                className={viewer?.isAdmin ? "" : "ml-auto"}
+                disabled={deleting}
                 onClick={() => void handleDelete()}
               >
                 <Trash2 className="size-4" /> Eliminar

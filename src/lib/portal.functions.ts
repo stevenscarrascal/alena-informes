@@ -540,6 +540,39 @@ export const adminDeleteArea = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+/** Mueve un informe a otro proceso (área). */
+export const adminMoveReport = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
+  .inputValidator((data: { id: string; areaId: string }) =>
+    z.object({ id: z.string().uuid(), areaId: z.string().uuid() }).parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    const [report] = await db.select().from(reports).where(eq(reports.id, data.id)).limit(1);
+    if (!report) throw new Error("Informe no encontrado");
+
+    const [targetArea] = await db.select().from(areas).where(eq(areas.id, data.areaId)).limit(1);
+    if (!targetArea) throw new Error("Proceso de destino no encontrado");
+
+    if (report.areaId === data.areaId) return { ok: true };
+
+    const [previousArea] = await db
+      .select()
+      .from(areas)
+      .where(eq(areas.id, report.areaId))
+      .limit(1);
+
+    await db.update(reports).set({ areaId: data.areaId }).where(eq(reports.id, data.id));
+
+    await logActivity({
+      userId: context.userId,
+      areaId: data.areaId,
+      reportId: data.id,
+      action: "informe_movido",
+      detail: `${report.title}: ${previousArea?.name ?? "?"} → ${targetArea.name}`,
+    });
+    return { ok: true };
+  });
+
 /** Asigna, actualiza o retira un miembro de un área. */
 export const adminSetMember = createServerFn({ method: "POST" })
   .middleware([requireAdmin])
