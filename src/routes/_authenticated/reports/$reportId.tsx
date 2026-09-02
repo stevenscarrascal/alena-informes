@@ -25,6 +25,7 @@ import {
 import { canAddVersion, canChangeStatus, canDeleteReport } from "@/lib/permissions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -72,6 +73,7 @@ function ReportPage() {
   const [savingEntry, setSavingEntry] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [moving, setMoving] = useState(false);
+  const [notifyOnApprove, setNotifyOnApprove] = useState(true);
 
   const query = useQuery({
     queryKey: ["report", reportId],
@@ -102,8 +104,8 @@ function ReportPage() {
     if (report?.id) void logView({ data: { id: report.id as string } });
   }, [report?.id, logView]);
 
-  async function changeStatus(status: Status) {
-    await updateStatus({ data: { id: reportId, status } });
+  async function changeStatus(status: Status, notify: boolean = true) {
+    await updateStatus({ data: { id: reportId, status, notify } });
     await queryClient.invalidateQueries();
     toast.success("Estado actualizado");
   }
@@ -266,9 +268,19 @@ function ReportPage() {
               <>
                 {report?.status !== "revisado" ? (
                   <>
-                    <Button size="sm" onClick={() => void changeStatus("revisado")}>
+                    <Button
+                      size="sm"
+                      onClick={() => void changeStatus("revisado", notifyOnApprove)}
+                    >
                       Aprobar y publicar
                     </Button>
+                    <label className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Checkbox
+                        checked={notifyOnApprove}
+                        onCheckedChange={(checked) => setNotifyOnApprove(checked === true)}
+                      />
+                      Notificar a los participantes del proceso
+                    </label>
                     <Button
                       size="sm"
                       variant={report?.status === "en_revision" ? "secondary" : "outline"}

@@ -367,13 +367,19 @@ export const registerView = createServerFn({ method: "POST" })
 /** Cambia el estado de revisión de un informe. */
 export const setReportStatus = createServerFn({ method: "POST" })
   .middleware([requireAuth])
-  .inputValidator((data: { id: string; status: "nuevo" | "en_revision" | "revisado" }) =>
-    z
-      .object({
-        id: z.string().uuid(),
-        status: z.enum(["nuevo", "en_revision", "revisado"]),
-      })
-      .parse(data),
+  .inputValidator(
+    (data: {
+      id: string;
+      status: "nuevo" | "en_revision" | "revisado";
+      notify?: boolean;
+    }) =>
+      z
+        .object({
+          id: z.string().uuid(),
+          status: z.enum(["nuevo", "en_revision", "revisado"]),
+          notify: z.boolean().optional(),
+        })
+        .parse(data),
   )
   .handler(async ({ data, context }) => {
     const report = await findVisibleReport(context.viewer, data.id);
@@ -394,7 +400,7 @@ export const setReportStatus = createServerFn({ method: "POST" })
     });
 
     // No debe tumbar el cambio de estado si el correo falla.
-    if (data.status === "revisado" && report.status !== "revisado") {
+    if (data.status === "revisado" && report.status !== "revisado" && data.notify !== false) {
       try {
         await notifyReportApproved({
           reportId: report.id,
