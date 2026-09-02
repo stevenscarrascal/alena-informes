@@ -36,6 +36,7 @@ import {
 } from "@/server/db";
 import { allOf, visibleActivityWhere, visibleReportsWhere } from "@/server/scope";
 import { logActivity } from "@/server/activity";
+import { notifyReportApproved } from "@/server/reports/notify";
 import { deleteByPrefix } from "@/server/storage/s3";
 import {
   toActivity,
@@ -391,6 +392,21 @@ export const setReportStatus = createServerFn({ method: "POST" })
       action: "estado_actualizado",
       detail: `${report.title} → ${data.status}`,
     });
+
+    // No debe tumbar el cambio de estado si el correo falla.
+    if (data.status === "revisado" && report.status !== "revisado") {
+      try {
+        await notifyReportApproved({
+          reportId: report.id,
+          areaId: report.areaId,
+          title: report.title,
+          authorId: report.authorId,
+          approverId: context.userId,
+        });
+      } catch (error) {
+        console.error("No se pudo enviar el aviso de aprobación", error);
+      }
+    }
     return { ok: true };
   });
 

@@ -121,6 +121,28 @@ export function reportReviewEmail(options: {
   };
 }
 
+export function reportApprovedEmail(options: {
+  title: string;
+  areaName: string;
+  authorName: string;
+  url: string;
+}): MailContent {
+  const intro = `${options.authorName} publicó un informe en el Proceso ${options.areaName} y ya está disponible para consultar.`;
+  const footer = `Recibes este aviso porque formas parte del Proceso ${options.areaName}.`;
+
+  return {
+    subject: `Informe aprobado: ${options.title}`,
+    html: layout({
+      heading: "Informe aprobado y publicado",
+      intro,
+      buttonLabel: "Ver informe",
+      url: options.url,
+      footer,
+    }),
+    text: plain([intro, options.url, footer]),
+  };
+}
+
 export function recoveryEmail(options: { url: string; hours: number }): MailContent {
   const intro =
     "Recibimos una solicitud para restablecer la contraseña de tu cuenta del portal de informes.";
